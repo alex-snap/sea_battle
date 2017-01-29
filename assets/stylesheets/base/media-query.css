@@ -1,0 +1,42 @@
+/* for phone only */
+@media (max-width: 599px) {
+    html, body {
+        font-size: 10px;
+    }
+    .sea-fields-wrap .sea-field {
+        width: 100%;
+        float: none;
+        margin-bottom: 2rem;
+    }
+    .sea-fields-wrap .sea-field:last-child {
+        margin-bottom: 0;
+    }
+}
+
+/* for tablet portrait up */
+@media (min-width: 600px) {
+    html, body {
+        font-size: 10px;
+    }
+    .sea-fields-wrap .sea-field {
+        width: 50%;
+        float: left;
+    }
+}
+
+/* for tablet landscape up */
+@media (min-width: 900px) {
+    html, body {
+        font-size: 14px;
+    }
+}
+
+/* for desktop up */
+@media (min-width: 1200px) {
+    .sea-field {}
+}
+
+/* for big desktop up */
+@media (min-width: 1800px) {
+    .sea-field {}
+}

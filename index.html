@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Морской бой</title>
+    <link rel="stylesheet" href="assets/stylesheets/base/reset.css">
+    <link rel="stylesheet" href="assets/stylesheets/base/fonts.css">
+    <link rel="stylesheet" href="assets/stylesheets/base/helpers.css">
+    <link rel="stylesheet" href="assets/stylesheets/base/helpers.css">
+    <link rel="stylesheet" href="assets/stylesheets/base/main.css">
+    <link rel="stylesheet" href="assets/stylesheets/base/media-query.css">
+    <link rel="stylesheet" href="assets/stylesheets/components/buttons.css">
+    <link rel="stylesheet" href="assets/stylesheets/components/sea-field.css">
+
+    <script type="application/javascript" src="assets/scripts/utils/DOM.js"></script>
+    <script type="application/javascript" src="assets/scripts/utils/BehaviourSubject.js"></script>
+
+    <script type="application/javascript" src="assets/scripts/sea-battle/Game.js"></script>
+    <script type="application/javascript" src="assets/scripts/sea-battle/ShipSchemaFactory.js"></script>
+    <script type="application/javascript" src="assets/scripts/sea-battle/ComputerPlayer.js"></script>
+
+    <script type="application/javascript" src="assets/scripts/client/GameFieldFactory.js"></script>
+    <script type="application/javascript" src="assets/scripts/client/main.js"></script>
+
+    <script type="application/javascript" src="assets/scripts/index.js"></script>
+</head>
+<body>
+
+<div class="d-table wh-100">
+    <div class="d-table-cell vertical-middle">
+        <h1 class="text-center mb-1 fs-15">Морской бой</h1>
+
+        <div class="text-center mb-1">
+
+            <!-- Status: Preparing -->
+            <button type="button" class="btn js-game-start-btn">Начать игру</button>
+
+            <!-- Status: Gaming || GameOver -->
+            <button type="button" class="btn js-game-restart-btn">Заново</button>
+
+            <!-- Status: Preparing -->
+            <button type="button" class="btn js-generate-ships-btn">Сгенерировать корабли</button>
+        </div>
+
+
+        <div class="sea-fields-wrap">
+
+            <p class="mb-1 mt-1 text-center">
+                <span class="js-computer-step">Ход компьютера...</span>
+                <span class="js-human-step">Ваш ход. Стреляйте по кораблям кликая на ячейки.</span>
+            </p>
+
+            <!-- Status: GameOver -->
+            <div class="sea-fields__popup js-game-win js-game-over">
+                <div class="sea-fields__popup__inner">
+                    <div class="sea-fields__popup__content">
+
+                        <!-- Status: GameOver -->
+                        <p class="fs-2 text-center js-game-over">
+                            Вы проиграли! Попробуйте заново.
+                        </p>
+
+                        <!-- Status: GameOver -->
+                        <p class="fs-2 text-center js-game-win">
+                            Вы победили!
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sea-field">
+
+                <div class="js-user-field-wrap"></div>
+
+                <!--<div class="text-center mt-1">-->
+                    <!--<p>Расставьте свои корабли на поле.</p>-->
+                    <!--<p class="mb-1">Доступные корабли:</p>-->
+
+                    <!--<div class="d-inline-block mr-1">-->
+                        <!--4-->
+                        <!--<table class="sea-table">-->
+                            <!--<tbody>-->
+                            <!--<tr class="sea-field__row">-->
+                                <!--<td class="sea-field__cell sea-field__cell&#45;&#45;busy">-->
+                                    <!--<div class="sea-field__in"></div>-->
+                                <!--</td>-->
+                            <!--</tr>-->
+                            <!--</tbody>-->
+                        <!--</table>-->
+                    <!--</div>-->
+                    <!--<div class="d-inline-block mr-1">-->
+                        <!--3-->
+                        <!--<table class="sea-table">-->
+                            <!--<tbody>-->
+                            <!--<tr class="sea-field__row">-->
+                                <!--<td class="sea-field__cell sea-field__cell&#45;&#45;busy">-->
+                                    <!--<div class="sea-field__in"></div>-->
+                                <!--</td>-->
+                            <!--</tr>-->
+                            <!--<tr class="sea-field__row">-->
+                                <!--<td class="sea-field__cell sea-field__cell&#45;&#45;busy">-->
+                                    <!--<div class="sea-field__in"></div>-->
+                                <!--</td>-->
+                            <!--</tr>-->
+                            <!--</tbody>-->
+                        <!--</table>-->
+                    <!--</div>-->
+                    <!--<div class="d-inline-block mr-1">-->
+                        <!--2-->
+                        <!--<table class="sea-table">-->
+                            <!--<tbody>-->
+                            <!--<tr class="sea-field__row">-->
+                                <!--<td class="sea-field__cell sea-field__cell&#45;&#45;busy">-->
+                                    <!--<div class="sea-field__in"></div>-->
+                                <!--</td>-->
+                            <!--</tr>-->
+                            <!--<tr class="sea-field__row">-->
+                                <!--<td class="sea-field__cell sea-field__cell&#45;&#45;busy">-->
+                                    <!--<div class="sea-field__in"></div>-->
+                                <!--</td>-->
+                            <!--</tr>-->
+                            <!--<tr class="sea-field__row">-->
+                                <!--<td class="sea-field__cell sea-field__cell&#45;&#45;busy">-->
+                                    <!--<div class="sea-field__in"></div>-->
+                                <!--</td>-->
+                            <!--</tr>-->
+                            <!--</tbody>-->
+                        <!--</table>-->
+                    <!--</div>-->
+                    <!--<div class="d-inline-block mr-1">-->
+                        <!--1-->
+                        <!--<table class="sea-table">-->
+                            <!--<tbody>-->
+                            <!--<tr class="sea-field__row">-->
+                                <!--<td class="sea-field__cell sea-field__cell&#45;&#45;busy">-->
+                                    <!--<div class="sea-field__in"></div>-->
+                                <!--</td>-->
+                            <!--</tr>-->
+                            <!--<tr class="sea-field__row">-->
+                                <!--<td class="sea-field__cell sea-field__cell&#45;&#45;busy">-->
+                                    <!--<div class="sea-field__in"></div>-->
+                                <!--</td>-->
+                            <!--</tr>-->
+                            <!--<tr class="sea-field__row">-->
+                                <!--<td class="sea-field__cell sea-field__cell&#45;&#45;busy">-->
+                                    <!--<div class="sea-field__in"></div>-->
+                                <!--</td>-->
+                            <!--</tr>-->
+                            <!--<tr class="sea-field__row">-->
+                                <!--<td class="sea-field__cell sea-field__cell&#45;&#45;busy">-->
+                                    <!--<div class="sea-field__in"></div>-->
+                                <!--</td>-->
+                            <!--</tr>-->
+                            <!--</tbody>-->
+                        <!--</table>-->
+                    <!--</div>-->
+                <!--</div>-->
+            </div>
+
+            <div class="sea-field">
+
+                <div class="sea-field__in js-computer-field-wrap"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

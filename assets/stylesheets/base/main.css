@@ -1,0 +1,7 @@
+html, body {
+    font-family: 'robotolight', sans-serif;
+    font-size: 14px;
+    height: 100%;
+    background-color: #A7DBD8;
+    transition: font-size 200ms ease-in-out;
+}

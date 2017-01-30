@@ -21,6 +21,8 @@ Client.main = {
 
     this._COMPUTER_STEP_DELAY = 1000; // ms
 
+    this._gameDifficult = 0;
+
     this._classNames = {
       woundedCell: 'sea-field__cell--wounded',
       missedCell: 'sea-field__cell--missed',
@@ -115,6 +117,7 @@ Client.main = {
       { id: this._playersIds.human, shipsSchema: this._humanShipsSchema },
       { id: this._playersIds.computer, shipsSchema: computerShipsSchema }
     ];
+    this._computerPlayer.setSettings(this._gameDifficult, this._gameRules.AVAILABLE_SHIPS);
     this._game.start(participants, this._gameRules.FIELD_SIZE);
   },
   _onGenerateShipsClicked: function(event) {
@@ -217,6 +220,6 @@ Client.main = {
     return new this._SeaBattleGame(this._Utils.BehaviourSubject);
   },
   _createComputerPlayer: function() {
-    return new this._SeaBattleComputerPlayer();
+    return new this._SeaBattleComputerPlayer(1, this._gameRules.AVAILABLE_SHIPS);
   }
 };

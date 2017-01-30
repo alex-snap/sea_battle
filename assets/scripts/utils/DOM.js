@@ -47,6 +47,19 @@ Utils.DOM.delegate = function(selector, eventType, handler, elementScope) {
   return function() { target.removeEventListener(eventType, listener) };
 };
 
+Utils.DOM.setElementStyle = function (element, styles) {
+  if (element != null) {
+    var elements = element instanceof NodeList ? element : [element];
+    for (var i = 0; i < elements.length; i++) {
+      for (style in styles) {
+        if (styles.hasOwnProperty(style)) {
+          elements[i].style[style] = styles[style];
+        }
+      }
+    }
+  }
+};
+
 Utils.DOM._closest = function(element, selector, scopeElement) {
   if (element.isEqualNode(scopeElement)) {
     return undefined;

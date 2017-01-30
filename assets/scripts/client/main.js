@@ -54,55 +54,14 @@ Client.main = {
   },
 
   _initHandlers: function () {
-    var self = this;
-
     this._game.stateSubject.subscribe(this._onGameStateChange.bind(this));
-
-    // on click Generate ships button
-    this._elms.generateShipsBtn.addEventListener('click', function () {
-      self._humanShipsSchema = self._gameShipSchemaFactory.createRandom(self._gameRules.FIELD_SIZE, self._gameRules.AVAILABLE_SHIPS);
-      var gameFieldElement = self._gameFieldFactory.create(self._gameRules.FIELD_SIZE, self._humanShipsSchema);
-      self._elms.userFieldWrap.innerHTML = '';
-      self._elms.userFieldWrap.appendChild(gameFieldElement);
-      self._showEl(self._elms.gameStartBtn);
-    });
-
-    // on click Start game
-    this._elms.gameStartBtn.addEventListener('click', function () {
-      var computerShipsSchema = self._gameShipSchemaFactory.createRandom(self._gameRules.FIELD_SIZE, self._gameRules.AVAILABLE_SHIPS);
-      var participants = [
-        { id: self._playersIds.human, shipsSchema: self._humanShipsSchema },
-        { id: self._playersIds.computer, shipsSchema: computerShipsSchema }
-      ];
-      self._game.start(participants, self._gameRules.FIELD_SIZE);
-    });
-
-    // on click Restart game
-    this._elms.gameRestartBtn.addEventListener('click', function () {
-      self._transitToPreparing();
-    });
-
-    // on click Computer cell
-    this._Utils.DOM.delegate('.js-cell', 'click', function (event) {
-      var element = event.target;
-      var x = element.getAttribute('data-x');
-      var y = element.getAttribute('data-y');
-      var fireResult = self._game.fire(self._playersIds.human, x, y);
-
-      switch (fireResult) {
-        case 'hit':
-          self._hitCell(element);
-          break;
-        case 'miss':
-          self._missCell(element);
-          break;
-        default:
-          console.log('nothing');
-          break;
-      }
-    }, this._elms.computerFieldWrap);
+    this._elms.generateShipsBtn.addEventListener('click', this._onGenerateShipsClicked.bind(this));
+    this._elms.gameStartBtn.addEventListener('click', this._onGameStartClicked.bind(this));
+    this._elms.gameRestartBtn.addEventListener('click', this._onGameRestartClicked.bind(this));
+    this._Utils.DOM.delegate('.js-cell', 'click', this._onComputerCellClicked.bind(this), this._elms.computerFieldWrap);
   },
 
+  // Event handlers
   _onGameStateChange: function (gameState) {
     var status = gameState.status;
     switch (status) {
@@ -128,6 +87,45 @@ Client.main = {
         }
         break;
     }
+  },
+  _onComputerCellClicked: function (event) {
+    var element = event.target;
+    var x = element.getAttribute('data-x');
+    var y = element.getAttribute('data-y');
+    var fireResult = this._game.fire(this._playersIds.human, x, y);
+
+    switch (fireResult) {
+      case 'hit':
+        this._hitCell(element);
+        break;
+      case 'miss':
+        this._missCell(element);
+        break;
+      default:
+        console.log('nothing');
+        break;
+    }
+  },
+  _onGameStartClicked: function(event) {
+    var computerShipsSchema = this._gameShipSchemaFactory.createRandom(
+      this._gameRules.FIELD_SIZE,
+      this._gameRules.AVAILABLE_SHIPS
+    );
+    var participants = [
+      { id: this._playersIds.human, shipsSchema: this._humanShipsSchema },
+      { id: this._playersIds.computer, shipsSchema: computerShipsSchema }
+    ];
+    this._game.start(participants, this._gameRules.FIELD_SIZE);
+  },
+  _onGenerateShipsClicked: function(event) {
+    this._humanShipsSchema = this._gameShipSchemaFactory.createRandom(this._gameRules.FIELD_SIZE, this._gameRules.AVAILABLE_SHIPS);
+    var gameFieldElement = this._gameFieldFactory.create(this._gameRules.FIELD_SIZE, this._humanShipsSchema);
+    this._elms.userFieldWrap.innerHTML = '';
+    this._elms.userFieldWrap.appendChild(gameFieldElement);
+    this._showEl(this._elms.gameStartBtn);
+  },
+  _onGameRestartClicked: function(event) {
+    this._transitToPreparing();
   },
 
   // Client state transitions
@@ -187,13 +185,6 @@ Client.main = {
     }, this._COMPUTER_STEP_DELAY);
   },
 
-  _hitCell: function(element) {
-    this._Utils.DOM.addClass(element, this._classNames.woundedCell);
-  },
-  _missCell: function(element) {
-    this._Utils.DOM.addClass(element, this._classNames.missedCell);
-  },
-
   _hidePreparingElements: function() {
     this._showEl(this._elms.computerFieldWrap);
     this._showEl(this._elms.gameRestartBtn);
@@ -202,31 +193,19 @@ Client.main = {
     this._hideEl(this._elms.generateShipsBtn);
   },
 
-  // helpers
+  // Helpers
+  // ---------------
+  _hitCell: function(element) {
+    this._Utils.DOM.addClass(element, this._classNames.woundedCell);
+  },
+  _missCell: function(element) {
+    this._Utils.DOM.addClass(element, this._classNames.missedCell);
+  },
   _showEl: function (element) {
-    this._setElementStyle(element, { display: '' });
+    this._Utils.DOM.setElementStyle(element, { display: '' });
   },
   _hideEl: function (element) {
-    this._setElementStyle(element, { display: 'none' });
-  },
-  _setElementStyle: function (element, styles) {
-    if (element != null) {
-      if (element instanceof NodeList) {
-        for (var i = 0; i < element.length; i++) {
-          for (style in styles) {
-            if (styles.hasOwnProperty(style)) {
-              element[i].style[style] = styles[style];
-            }
-          }
-        }
-      } else {
-        for (style in styles) {
-          if (styles.hasOwnProperty(style)) {
-            element.style[style] = styles[style];
-          }
-        }
-      }
-    }
+    this._Utils.DOM.setElementStyle(element, { display: 'none' });
   },
   _createFieldFactory: function () {
     return new Client.GameFieldFactory(this._Utils.DOM);

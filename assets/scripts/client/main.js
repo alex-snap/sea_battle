@@ -102,7 +102,7 @@ Client.main = {
         this._missCell(element);
         break;
       default:
-        console.log('nothing');
+        // nothing
         break;
     }
   },

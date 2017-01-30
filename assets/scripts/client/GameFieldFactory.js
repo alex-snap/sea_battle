@@ -11,7 +11,7 @@ Client.GameFieldFactory.prototype.create = function(size, shipsSchema) {
   for (var i = 0; i < size; i++) {
     var row = this._createRow();
     for (var j = 0; j < size; j++) {
-      var type = (shipsSchema && shipsSchema[j] && shipsSchema[j][i] && shipsSchema[j][i].busy === true) ? 'busy' : undefined;
+      var type = (shipsSchema && shipsSchema[j][i] === 1) ? 'busy' : undefined;
       row.appendChild(this._createCell(j, i, type));
     }
     body.appendChild(row);
